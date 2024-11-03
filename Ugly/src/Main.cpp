@@ -1,6 +1,13 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <iostream>
+
+
+void ProcessInput(GLFWwindow* window);
+void OnFrameBufferSizeChanged(GLFWwindow* window, int width, int height);
+
+
 int main()
 {
     if (!glfwInit())
@@ -9,34 +16,57 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    //glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-
-
 
     /* Create a windowed mode window and its OpenGL context */
-    //GLFWwindow* window = glfwCreateWindow(640, 480, "Ugly", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(800, 600, "Ugly", nullptr, nullptr);
 
-    //if (!window)
-    //{
-    //    glfwTerminate();
-    //    return -1;
-    //}
+    if (!window)
+    {
+        std::cout << "Failed to create GLFW window" << '\n';
+        glfwTerminate();
+        return -1;
+    }
 
-    ///* Make the window's context current */
-    //glfwMakeContextCurrent(window);
+    /* Make the window's context current */
+    glfwMakeContextCurrent(window);
 
-    ///* Loop until the user closes the window */
-    //while (!glfwWindowShouldClose(window))
-    //{
-    //    /* Render here */
-    //    glClear(GL_COLOR_BUFFER_BIT);
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cout << "Failed to initialize GLAD" << '\n';
+        return -1;
+    }
 
-    //    /* Swap front and back buffers */
-    //    glfwSwapBuffers(window);
+    glViewport(0, 0, 800, 600);
+    glfwSetFramebufferSizeCallback(window, OnFrameBufferSizeChanged);
 
-    //    /* Poll for and process events */
-    //    glfwPollEvents();
-    //}
+    /* Loop until the user closes the window */
+    while (!glfwWindowShouldClose(window))
+    {
+        /* Input */
+        ProcessInput(window);
 
-    //glfwTerminate();
+        /* Rendering */
+        glClearColor(250.0f / 255.0f, 90.0f / 255.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        /* Swap front and back buffers */
+        glfwSwapBuffers(window);
+        /* Poll for and process events */
+        glfwPollEvents();
+    }
+
+    glfwTerminate();
+}
+
+void ProcessInput(GLFWwindow* window)
+{
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    {
+        glfwSetWindowShouldClose(window, true);
+    }
+}
+
+void OnFrameBufferSizeChanged(GLFWwindow* window, int width, int height)
+{
+    glViewport(0, 0, width, height);
 }
