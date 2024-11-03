@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 
 #include <iostream>
+#include <time.h>
 
 
 void ProcessInput(GLFWwindow* window);
@@ -39,14 +40,28 @@ int main()
     glViewport(0, 0, 800, 600);
     glfwSetFramebufferSizeCallback(window, OnFrameBufferSizeChanged);
 
+
+    clock_t lastTime{ clock() };
+
+
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
+        /* Frame time */
+        clock_t elapsedTime{ clock() };
+        clock_t frameTime{ elapsedTime - lastTime };
+        lastTime = elapsedTime;
+
         /* Input */
         ProcessInput(window);
 
+        /* Update */
+        char title[128];
+        snprintf(title, 128, "Ugly. Frame time: %f seconds.", ((float)frameTime) / CLOCKS_PER_SEC);
+        glfwSetWindowTitle(window, title);
+
         /* Rendering */
-        glClearColor(250.0f / 255.0f, 90.0f / 255.0f, 0.0f, 1.0f);
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         /* Swap front and back buffers */
