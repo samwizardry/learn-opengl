@@ -4,6 +4,7 @@
 # Ignore any other files further up in the file system
 root = true
 
+# All files
 # Configuration for all files
 [*]
 # Enforce Unix style line endings (\n only)
@@ -14,5 +15,18 @@ insert_final_newline = true
 indent_style = space
 # Always indent by 4 characters
 indent_size = 4
+tab_width = 4
 # Remove whitespace characters at the end of line
 trim_trailing_whitespace = true
+
+# Xml files
+[*.{xml,csproj,props,targets,ruleset,nuspec,resx}]
+indent_size = 2
+
+# Javascript files
+[*.js]
+indent_size = 2
+
+# Json files
+[*.{json,config,nswag}]
+indent_size = 2
