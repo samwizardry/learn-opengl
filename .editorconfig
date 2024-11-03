@@ -19,6 +19,10 @@ tab_width = 4
 # Remove whitespace characters at the end of line
 trim_trailing_whitespace = true
 
+# Solution files
+[*.sln]
+end_of_line = crlf
+
 # Xml files
 [*.{xml,csproj,props,targets,ruleset,nuspec,resx}]
 indent_size = 2
